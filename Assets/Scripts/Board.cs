@@ -70,7 +70,6 @@ public class Board : MonoBehaviour
 
     public float xPenetration(Vector3 point)
     {
-        Debug.Log("xPenetration point: " + point + "  size: " + size);
         if (point.x > size.x / 2)
             return point.x - size.x / 2;
         else if (point.x < -size.x / 2)
@@ -80,7 +79,6 @@ public class Board : MonoBehaviour
 
     public float zPenetration(Vector3 point)
     {
-        Debug.Log("zPenetration point: " + point + "  size: " + size);
         if (point.z > size.y / 2)
             return point.z - size.y / 2;
         else if(point.z < -size.y / 2)

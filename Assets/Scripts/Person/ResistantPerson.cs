@@ -6,10 +6,11 @@ public class ResistantPerson : GenericPersonState
 {
     public override void EnterState(PersonContext ctx)
     {
-        //Debug.Log("Hellow");
+        ctx.GetComponent<MeshRenderer>().material = ctx.resistantMat;
+        ctx.SetContaminationChance(0.0f);
     }
 
-    public override void UpdateState(PersonContext ctx)
+    public override void UpdateState(PersonContext ctx, Population population)
     {
         //Debug.Log("Hellow update");
     }
