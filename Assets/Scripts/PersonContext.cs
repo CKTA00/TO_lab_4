@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum StateID
@@ -20,8 +18,82 @@ public class PersonContext : MonoBehaviour
     ContaminatedPersonSymptomic symptomicState = new ContaminatedPersonSymptomic();
     ContaminatedPersonHiddenSymptoms hiddenSymptomsState = new ContaminatedPersonHiddenSymptoms();
 
+    Vector3 velocity; // in m per 0.04 s
+    Vector3 currentPosition;
+    static readonly float maxVelocity = 0.1f; // meters per 0.04s
+    private Board board;
+
     private void Start()
     {
-        //Debug.Log("I am a person!");
+        board = GameObject.Find("Board").GetComponent<Board>();
+
+        currentPosition = gameObject.GetComponent<Transform>().position;
+        Vector2 randomVector = Random.insideUnitCircle;
+        velocity = new Vector3(randomVector.x,0,randomVector.y) * maxVelocity;
+
+        SetInitialState();
+        state.EnterState(this);
     }
+
+    private void FixedUpdate()
+    {
+        HandleMovement();
+        state.UpdateState(this);
+    }
+
+    private void HandleMovement()
+    {
+        currentPosition += velocity;
+        if(board.isOutOfBoundry(currentPosition))
+        {
+            if(Random.Range(0f,1f) > 0.5f)
+            {
+                Debug.LogWarning("What");
+                Destroy(gameObject);
+            }
+
+            float xMove = board.xPenetration(currentPosition);
+            float zMove = board.zPenetration(currentPosition);
+            Debug.Log("move " + xMove + " , " + zMove);
+
+            if(xMove != 0)
+            {
+                currentPosition.x -= 2 * xMove;
+                velocity.x = -velocity.x;
+            }
+
+            if(zMove != 0)
+            {
+                currentPosition.z -= 2 * zMove;
+                velocity.z = -velocity.z; 
+            }
+        }
+        gameObject.transform.position = currentPosition;
+    }
+
+    private void SetInitialState()
+    {
+        switch (initialState)
+        {
+            case StateID.resistant:
+                state = resistantState;
+                break;
+            case StateID.sensitive:
+                state = sensitiveState;
+                break;
+            case StateID.symptomic:
+                state = symptomicState;
+                break;
+            case StateID.hiddenSymptoms:
+                state = hiddenSymptomsState;
+                break;
+            default:
+                Debug.LogWarning("INVALID StateID");
+                break;
+        };
+    }
+
+
+
+
 }

@@ -17,7 +17,7 @@ public class Board : MonoBehaviour
 
     public void SetSize(Vector2 size)
     {
-        if(size.x > 0.0f && size.x < 50.0f && size.y > 0.0f && size.y < 50.0f)
+        if(size.x > 0.0f && size.x <= 50.0f && size.y > 0.0f && size.y <= 50.0f)
         {
             this.size = new Vector3(size.x,size.y,1.0f);
             UpdateBoardSize();
@@ -61,6 +61,31 @@ public class Board : MonoBehaviour
             position.x = - size.x / 2;
         }
         return position;
+    }
+
+    public bool isOutOfBoundry(Vector3 point)
+    {
+        return (point.x > size.x / 2 || point.x < -size.x / 2 || point.z > size.y / 2 || point.z < -size.y / 2);
+    }
+
+    public float xPenetration(Vector3 point)
+    {
+        Debug.Log("xPenetration point: " + point + "  size: " + size);
+        if (point.x > size.x / 2)
+            return point.x - size.x / 2;
+        else if (point.x < -size.x / 2)
+            return point.x + size.x / 2;
+        return 0;
+    }
+
+    public float zPenetration(Vector3 point)
+    {
+        Debug.Log("zPenetration point: " + point + "  size: " + size);
+        if (point.z > size.y / 2)
+            return point.z - size.y / 2;
+        else if(point.z < -size.y / 2)
+            return point.z + size.y / 2;
+        return 0;
     }
 
     public Vector3 getRandomFieldPosition()

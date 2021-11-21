@@ -29,7 +29,7 @@ public class Population : MonoBehaviour
                 personPrefab.GetComponent<PersonContext>().initialState = StateID.resistant;
 
             Vector3 position = board.getRandomFieldPosition();
-            Debug.Log(position);
+            Debug.Log("Random init position: "+position);
             population.Add(GameObject.Instantiate(personPrefab, position, Quaternion.Euler(0, 0, 0)).GetComponent<PersonContext>());
         }
     }
@@ -40,8 +40,8 @@ public class Population : MonoBehaviour
         GeneratePopulation();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        
+           
     }
 }

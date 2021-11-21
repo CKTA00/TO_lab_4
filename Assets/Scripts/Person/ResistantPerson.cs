@@ -6,11 +6,11 @@ public class ResistantPerson : GenericPersonState
 {
     public override void EnterState(PersonContext ctx)
     {
-        throw new System.NotImplementedException();
+        //Debug.Log("Hellow");
     }
 
     public override void UpdateState(PersonContext ctx)
     {
-        throw new System.NotImplementedException();
+        //Debug.Log("Hellow update");
     }
 }
