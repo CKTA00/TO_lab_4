@@ -7,4 +7,11 @@ public class ContaminatedPersonSymptomic : ContaminatedPerson
         base.EnterState(ctx);
         ctx.SetContaminationChance(1.0f);
     }
+
+    public new ContaminatedPersonSymptomic Copy()
+    {
+        ContaminatedPersonSymptomic copy = new ContaminatedPersonSymptomic();
+        copy.timeToHeal = timeToHeal;
+        return copy;
+    }
 }

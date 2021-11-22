@@ -11,13 +11,12 @@ public class PersonContext : MonoBehaviour
 
     [Header("Properties")]
 
-    int ID;
+    public int ID;
     Vector3 velocity; // in m per 0.04 s
     Vector3 currentPosition;
     private float contaminationChance;
     private float symptomicChance = 0.5f; // currently do not need saving in memento
 
-    static readonly float maxVelocity = 0.1f; // meters per 0.04s
     // references
     private Board board;
     private Population population;
@@ -64,15 +63,15 @@ public class PersonContext : MonoBehaviour
         return ID;
     }
 
-    public void Setup(GameObject masterObject, GenericPersonState initialState, int ID)
+    public void Setup(GameObject masterObject, GenericPersonState initialState, int ID, Vector3 velocity)
     {
         //GameObject masterObject = GameObject.Find("Board");
         board = masterObject.GetComponent<Board>();
         population = masterObject.GetComponent<Population>();
 
         currentPosition = gameObject.GetComponent<Transform>().position;
-        Vector2 randomVector = Random.insideUnitCircle;
-        velocity = new Vector3(randomVector.x,0,randomVector.y) * maxVelocity;
+
+        this.velocity = velocity;
         HandleMovement(true);
 
         state = initialState;
@@ -132,10 +131,41 @@ public class PersonContext : MonoBehaviour
         // Deep-coping referenced objects:
         memento.resistantState = resistantState.Copy();
         memento.sensitiveState = sensitiveState.Copy();
-        memento.symptomicState = symptomicState.Copy() as ContaminatedPersonSymptomic;
-        memento.hiddenSymptomsState = hiddenSymptomsState.Copy() as ContaminatedPersonHiddenSymptoms;
-
+        memento.symptomicState = symptomicState.Copy();
+        memento.hiddenSymptomsState = hiddenSymptomsState.Copy();
+        if (state == resistantState)
+            memento.state = memento.resistantState;
+        else if (state == sensitiveState)
+            memento.state = memento.sensitiveState;
+        else if (state == symptomicState)
+            memento.state = memento.symptomicState;
+        else if (state == hiddenSymptomsState)
+            memento.state = memento.hiddenSymptomsState;
+        else
+            throw new System.Exception("CreateMemento in PersonContext cannot identify state.");
         return memento;
+    }
+
+    public void ReadMemento(Memento memento, GameObject masterObject)
+    {
+        // Deep-coping referenced objects:
+        resistantState = memento.resistantState.Copy();
+        sensitiveState = memento.sensitiveState.Copy();
+        symptomicState = memento.symptomicState.Copy();
+        hiddenSymptomsState = memento.hiddenSymptomsState.Copy();
+        if (memento.state == memento.resistantState)
+            state = resistantState;
+        else if (memento.state == memento.sensitiveState)
+            state = sensitiveState;
+        else if (memento.state == memento.symptomicState)
+            state = symptomicState;
+        else if (memento.state == memento.hiddenSymptomsState)
+            state = hiddenSymptomsState;
+        else
+            throw new System.Exception("ReadMemento in PersonContext cannot identify state.");
+
+        currentPosition = memento.currentPosition;
+        Setup(masterObject, state, memento.ID, memento.velocity);
     }
 
 

@@ -9,4 +9,11 @@ public class ContaminatedPersonHiddenSymptoms : ContaminatedPerson
         base.EnterState(ctx);
         ctx.SetContaminationChance(1.0f);
     }
+
+    public new ContaminatedPersonHiddenSymptoms Copy()
+    {
+        ContaminatedPersonHiddenSymptoms copy = new ContaminatedPersonHiddenSymptoms();
+        copy.timeToHeal = timeToHeal;
+        return copy;
+    }
 }

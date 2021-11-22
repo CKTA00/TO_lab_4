@@ -74,19 +74,24 @@ public class SensitivePerson : GenericPersonState
             nb.timeToContaminate -= Time.fixedDeltaTime;
             if(nb.timeToContaminate<0f)
             {
-                if(Random.Range(0f,1f) < population.FindPersonByID(nb.personID).GetContaminationChance())
+                PersonContext contaminator = population.FindPersonByID(nb.personID);
+                if(contaminator != null) //check if contaminator did not leave the board
                 {
-                    if (Random.Range(0f, 1f) < ctx.GetSymptomicChance())
-                        ctx.SwitchState(ctx.symptomicState);
-                    else
-                        ctx.SwitchState(ctx.hiddenSymptomsState);
+                    if (Random.Range(0f, 1f) < contaminator.GetContaminationChance())
+                    {
+                        if (Random.Range(0f, 1f) < ctx.GetSymptomicChance())
+                            ctx.SwitchState(ctx.symptomicState);
+                        else
+                            ctx.SwitchState(ctx.hiddenSymptomsState);
 
-                    //Debug.Log("CONTAMINATION");
+                        //Debug.Log("CONTAMINATION");
+                    }
+                    else
+                    {
+                        nb.timeToContaminate = contaminationMinimalTime / 2;
+                    }
                 }
-                else
-                {
-                    nb.timeToContaminate = contaminationMinimalTime / 2;
-                }
+                
             }
         }
     }
@@ -141,7 +146,7 @@ public class SensitivePerson : GenericPersonState
         {
             copy.neighbours.Add(nb.Copy());
         }
-
+        Debug.Log(copy.neighbours.Count+"/"+ neighbours.Count);
         return copy;
     }
 

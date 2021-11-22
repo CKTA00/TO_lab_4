@@ -7,6 +7,7 @@ public class Population : MonoBehaviour
     [Header("References And Prefabs")]
     [SerializeField] Board board;
     [SerializeField] GameObject personPrefab;
+    [SerializeField] float maxVelocity = 0.1f; // meters per 0.04s
 
     [Header ("Initial Population")]
     [SerializeField] int initialPopulationSize;
@@ -48,7 +49,7 @@ public class Population : MonoBehaviour
         if(nextSpawn<0f)
         {
             if (population.Count < populationSizeLimit)
-                Spawn();
+                RandomSpawn();
             else
                 Debug.LogWarning("Population size limit (" + populationSizeLimit + ") has been reached!");
             nextSpawn = RandomizeSpawnTime();
@@ -61,36 +62,50 @@ public class Population : MonoBehaviour
         for (int i = 0; i < initialPopulationSize; i++)
         {
             Vector3 position = board.getRandomFieldPosition();
+            Vector3 velocity = Random.insideUnitCircle * maxVelocity;
+            velocity.z = velocity.y;
+            velocity.y = 0;
+            
             PersonContext currentPerson = GameObject.Instantiate(personPrefab, position, Quaternion.Euler(0, 0, 0)).GetComponent<PersonContext>();
             if (Random.Range(0f, 1f) < sensitiveInitialChance)
-                currentPerson.Setup(gameObject, currentPerson.sensitiveState, nextID);
+                currentPerson.Setup(gameObject, currentPerson.sensitiveState, nextID, velocity);
             else
-                currentPerson.Setup(gameObject, currentPerson.resistantState, nextID);
+                currentPerson.Setup(gameObject, currentPerson.resistantState, nextID, velocity);
             population.Add(currentPerson);
             nextID++; //ukryj to za kolejnym obiektem
         }
     }
 
-    private void Spawn()
+    private void RandomSpawn()
     {
         Vector3 position = board.GetRandomBoundryPosition();
+        Vector3 velocity = Random.insideUnitCircle * maxVelocity;
+        velocity.z = velocity.y;
+        velocity.y = 0;
         PersonContext currentPerson = GameObject.Instantiate(personPrefab, position, Quaternion.Euler(0, 0, 0)).GetComponent<PersonContext>();
         if (Random.Range(0f, 1f) < contaminatedSpawnChance)
         {
             if (Random.Range(0f, 1f) < contaminatedHasSymptomsChance)
-                currentPerson.Setup(gameObject, currentPerson.symptomicState, nextID);
+                currentPerson.Setup(gameObject, currentPerson.symptomicState, nextID, velocity);
             else
-                currentPerson.Setup(gameObject, currentPerson.hiddenSymptomsState, nextID);
+                currentPerson.Setup(gameObject, currentPerson.hiddenSymptomsState, nextID, velocity);
         }
         else
         {
             if (Random.Range(0f, 1f) < sensitiveSpawnChance)
-                currentPerson.Setup(gameObject, currentPerson.sensitiveState, nextID);
+                currentPerson.Setup(gameObject, currentPerson.sensitiveState, nextID, velocity);
             else
-                currentPerson.Setup(gameObject, currentPerson.resistantState, nextID);
+                currentPerson.Setup(gameObject, currentPerson.resistantState, nextID, velocity);
         }
         population.Add(currentPerson);
         nextID++;
+    }
+
+    private void Spawn(Memento memento)
+    {
+        PersonContext currentPerson = GameObject.Instantiate(personPrefab, memento.currentPosition, Quaternion.Euler(0, 0, 0)).GetComponent<PersonContext>();
+        currentPerson.ReadMemento(memento, gameObject);
+        population.Add(currentPerson);
     }
 
     private float RandomizeSpawnTime()
@@ -110,29 +125,31 @@ public class Population : MonoBehaviour
 
     public void CreateSnapshot()
     {
-        snapshot.Clear();
+        snapshot = new List<Memento>();
         foreach (var person in population)
         {
             snapshot.Add(person.CreateMemento());
         }
-        //foreach (var m in snapshot)
-        //{
-        //    CreateProperReference(m);
-        //}
         snapshotNextID = nextID;
     }
 
-    //public void CreateProperReference(Memento copy)
-    //{
-    //    foreach (var nb in copy.sensitiveState.GetNeighbours()) // neighbours of the copy (memento)
-    //    {
-    //        foreach (var m in snapshot) // all copies (mementos)
-    //        {
-    //            if (m.ID == nb.personID)
-    //            {
-    //                nb.personID = m.ID;
-    //            }
-    //        }
-    //    }
-    //}
+    public void ReadSnapshot()
+    {
+        if(snapshot != null)
+        {
+            // remove old simulation:
+            foreach (var p in population)
+            {
+                Destroy(p.gameObject);
+            }
+            population.Clear();
+
+            nextID = snapshotNextID;
+            foreach (var memento in snapshot)
+            {
+                Spawn(memento);
+            }
+        }
+       
+    }
 }

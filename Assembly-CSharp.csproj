@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\PersonContext.cs" />
     <Compile Include="Assets\Scripts\Person\ContaminatedPersonHiddenSymptoms.cs" />
     <Compile Include="Assets\Scripts\Memento.cs" />
+    <Compile Include="Assets\Scripts\Menu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class ContaminatedPerson : GenericPersonState
 {
-    protected float timeToHeal;
+    protected float timeToHeal = 0;
     float healTime = 25f;
     float healTimeVariation = 5f;
 
     public override void EnterState(PersonContext ctx)
     {
         ctx.GetComponent<MeshRenderer>().material = ctx.contaminatedMat;
-        timeToHeal = healTime + healTimeVariation * Random.Range(-1f, 1f);
+        if(timeToHeal == 0)
+            timeToHeal = healTime + healTimeVariation * Random.Range(-1f, 1f);
     }
 
     public override void UpdateState(PersonContext ctx, Population population)
