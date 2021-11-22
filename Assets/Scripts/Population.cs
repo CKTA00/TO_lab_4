@@ -98,6 +98,16 @@ public class Population : MonoBehaviour
         return spawnTime + spawnTimeVariation * Random.Range(-1f,1f);
     }
 
+    public PersonContext FindPersonByID(int id)
+    {
+        foreach (var p in population)
+        {
+            if (p.GetID() == id)
+                return p;
+        }
+        return null;
+    }
+
     public void CreateSnapshot()
     {
         snapshot.Clear();
@@ -114,13 +124,13 @@ public class Population : MonoBehaviour
 
     //public void CreateProperReference(Memento copy)
     //{
-    //    foreach (var nb in copy.sensitiveState.GetNeighbours())
+    //    foreach (var nb in copy.sensitiveState.GetNeighbours()) // neighbours of the copy (memento)
     //    {
-    //        foreach (var m in snapshot)
+    //        foreach (var m in snapshot) // all copies (mementos)
     //        {
-    //            if (m.ID == nb.person.GetID())
+    //            if (m.ID == nb.personID)
     //            {
-    //                nb.person = m.ID
+    //                nb.personID = m.ID;
     //            }
     //        }
     //    }

@@ -5,17 +5,24 @@ using UnityEngine;
 public class Neighbour
 {
     public float timeToContaminate;
-    public PersonContext person;
+    //public PersonContext person;
+    public int personID;
 
     public Neighbour(PersonContext person, float time)
     {
-        this.person = person;
+        this.personID = person.GetID();
+        timeToContaminate = time;
+    }
+
+    public Neighbour(int ID, float time)
+    {
+        this.personID = ID;
         timeToContaminate = time;
     }
 
     public Neighbour Copy()
     {
-        return new Neighbour(person, timeToContaminate);
+        return new Neighbour(personID, timeToContaminate);
     }
 }
 
@@ -67,14 +74,14 @@ public class SensitivePerson : GenericPersonState
             nb.timeToContaminate -= Time.fixedDeltaTime;
             if(nb.timeToContaminate<0f)
             {
-                if(Random.Range(0f,1f) < nb.person.GetContaminationChance())
+                if(Random.Range(0f,1f) < population.FindPersonByID(nb.personID).GetContaminationChance())
                 {
                     if (Random.Range(0f, 1f) < ctx.GetSymptomicChance())
                         ctx.SwitchState(ctx.symptomicState);
                     else
                         ctx.SwitchState(ctx.hiddenSymptomsState);
 
-                    Debug.Log("CONTAMINATION");
+                    //Debug.Log("CONTAMINATION");
                 }
                 else
                 {
@@ -88,7 +95,7 @@ public class SensitivePerson : GenericPersonState
     {
         foreach(var nb in neighbours)
         {
-            if (nb.person == person)
+            if (nb.personID == person.GetID())
                 return true;
         }
         return false;
@@ -98,12 +105,12 @@ public class SensitivePerson : GenericPersonState
     {
         foreach (var nb in neighbours)
         {
-            if (nb.person == person)
+            if (nb.personID == person.GetID())
                 return nb;
         }
         return null;
     }
-    
+
     public List<Neighbour> GetNeighbours()
     {
         return neighbours;
