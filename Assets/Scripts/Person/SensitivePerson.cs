@@ -150,7 +150,6 @@ public class SensitivePerson : GenericPersonState
         {
             copy.neighbours.Add(nb.Copy());
         }
-        Debug.Log(copy.neighbours.Count+"/"+ neighbours.Count);
         return copy;
     }
 
