@@ -12,9 +12,12 @@ public class Neighbour
         this.person = person;
         timeToContaminate = time;
     }
+
+    public Neighbour Copy()
+    {
+        return new Neighbour(person, timeToContaminate);
+    }
 }
-
-
 
 
 public class SensitivePerson : GenericPersonState
@@ -49,7 +52,14 @@ public class SensitivePerson : GenericPersonState
                         neighbours.Remove(FindNeighbour(person));
                     }
                 }
-            }  
+            }
+            else
+            {
+                if (NeighbourExists(person))
+                {
+                    neighbours.Remove(FindNeighbour(person));
+                }
+            }
         }
 
         foreach (var nb in neighbours)
@@ -59,7 +69,7 @@ public class SensitivePerson : GenericPersonState
             {
                 if(Random.Range(0f,1f) < nb.person.GetContaminationChance())
                 {
-                    if (Random.Range(0f, 1f) < ctx.symptomicChance)
+                    if (Random.Range(0f, 1f) < ctx.GetSymptomicChance())
                         ctx.SwitchState(ctx.symptomicState);
                     else
                         ctx.SwitchState(ctx.hiddenSymptomsState);
@@ -93,4 +103,40 @@ public class SensitivePerson : GenericPersonState
         }
         return null;
     }
+    
+    public List<Neighbour> GetNeighbours()
+    {
+        return neighbours;
+    }
+
+    ///// <summary>
+    ///// Returns refrence to the same object but in the newPopulation
+    ///// </summary>
+    ///// <param name="oldReference"></param>
+    ///// <param name=""></param>
+    ///// <returns></returns>
+    //private Neighbour AttachNeighbour(PersonContext oldReference, Population newPopulation)
+    //{
+    //    foreach (var nb in neighbours)
+    //    {
+    //        if (nb.person == oldReference)
+    //        {
+
+    //        }
+    //    }
+    //    return null;
+    //}
+
+    public SensitivePerson Copy()
+    {
+        SensitivePerson copy = new SensitivePerson();
+        foreach (var nb in neighbours)
+        {
+            copy.neighbours.Add(nb.Copy());
+        }
+
+        return copy;
+    }
+
+
 }

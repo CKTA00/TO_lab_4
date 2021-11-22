@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ContaminatedPerson : GenericPersonState
 {
-    private float timeToHeal;
+    protected float timeToHeal;
     float healTime = 25f;
     float healTimeVariation = 5f;
 
@@ -19,5 +19,12 @@ public class ContaminatedPerson : GenericPersonState
         {
             ctx.SwitchState(ctx.resistantState);
         }
+    }
+
+    public ContaminatedPerson Copy()
+    {
+        ContaminatedPerson copy = new ContaminatedPerson();
+        copy.timeToHeal = timeToHeal;
+        return copy;
     }
 }

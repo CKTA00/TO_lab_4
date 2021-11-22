@@ -13,14 +13,19 @@ public class Population : MonoBehaviour
     [SerializeField][Range(0,1)] float sensitiveInitialChance;
 
     [Header("Runtime Generator")]
-    [SerializeField] float spawnTime;
-    [SerializeField] float spawnTimeVariation;
+    [SerializeField] float spawnsPerMinute;
     [SerializeField] [Range(0, 1)] float sensitiveSpawnChance;
     [SerializeField] [Range(0, 1)] float contaminatedSpawnChance;
     [SerializeField] [Range(0, 1)] float contaminatedHasSymptomsChance;
+    [SerializeField] int populationSizeLimit;
 
     List<PersonContext> population;
+    int nextID = 0;
+    List<Memento> snapshot;
+    int snapshotNextID;
     float nextSpawn;
+    float spawnTime;
+    float spawnTimeVariation;
 
     public List<PersonContext> getPopulation()
     {
@@ -31,6 +36,9 @@ public class Population : MonoBehaviour
     {
         population = new List<PersonContext>();
         GeneratePopulation();
+
+        spawnTime = 60 / spawnsPerMinute;
+        spawnTimeVariation = spawnTime / 2;
         nextSpawn = spawnTime;
     }
 
@@ -39,47 +47,82 @@ public class Population : MonoBehaviour
         nextSpawn -= Time.fixedDeltaTime;
         if(nextSpawn<0f)
         {
-            Spawn();
+            if (population.Count < populationSizeLimit)
+                Spawn();
+            else
+                Debug.LogWarning("Population size limit (" + populationSizeLimit + ") has been reached!");
             nextSpawn = RandomizeSpawnTime();
         }
     }
 
     private void GeneratePopulation()
     {
+        PersonContext person = personPrefab.GetComponent<PersonContext>();
         for (int i = 0; i < initialPopulationSize; i++)
         {
-            if (Random.Range(0f, 1f) < sensitiveInitialChance)
-                personPrefab.GetComponent<PersonContext>().initialState = StateID.sensitive;
-            else
-                personPrefab.GetComponent<PersonContext>().initialState = StateID.resistant;
-
             Vector3 position = board.getRandomFieldPosition();
-            population.Add(GameObject.Instantiate(personPrefab, position, Quaternion.Euler(0, 0, 0)).GetComponent<PersonContext>());
+            PersonContext currentPerson = GameObject.Instantiate(personPrefab, position, Quaternion.Euler(0, 0, 0)).GetComponent<PersonContext>();
+            if (Random.Range(0f, 1f) < sensitiveInitialChance)
+                currentPerson.Setup(gameObject, currentPerson.sensitiveState, nextID);
+            else
+                currentPerson.Setup(gameObject, currentPerson.resistantState, nextID);
+            population.Add(currentPerson);
+            nextID++; //ukryj to za kolejnym obiektem
         }
     }
 
     private void Spawn()
     {
-        if(Random.Range(0f, 1f) < contaminatedSpawnChance)
+        Vector3 position = board.GetRandomBoundryPosition();
+        PersonContext currentPerson = GameObject.Instantiate(personPrefab, position, Quaternion.Euler(0, 0, 0)).GetComponent<PersonContext>();
+        if (Random.Range(0f, 1f) < contaminatedSpawnChance)
         {
             if (Random.Range(0f, 1f) < contaminatedHasSymptomsChance)
-                personPrefab.GetComponent<PersonContext>().initialState = StateID.symptomic;
+                currentPerson.Setup(gameObject, currentPerson.symptomicState, nextID);
             else
-                personPrefab.GetComponent<PersonContext>().initialState = StateID.hiddenSymptoms;
+                currentPerson.Setup(gameObject, currentPerson.hiddenSymptomsState, nextID);
         }
         else
         {
             if (Random.Range(0f, 1f) < sensitiveSpawnChance)
-                personPrefab.GetComponent<PersonContext>().initialState = StateID.sensitive;
+                currentPerson.Setup(gameObject, currentPerson.sensitiveState, nextID);
             else
-                personPrefab.GetComponent<PersonContext>().initialState = StateID.resistant;
+                currentPerson.Setup(gameObject, currentPerson.resistantState, nextID);
         }
-        Vector3 position = board.GetRandomBoundryPosition();
-        population.Add(GameObject.Instantiate(personPrefab, position, Quaternion.Euler(0, 0, 0)).GetComponent<PersonContext>());
+        population.Add(currentPerson);
+        nextID++;
     }
 
     private float RandomizeSpawnTime()
     {
         return spawnTime + spawnTimeVariation * Random.Range(-1f,1f);
     }
+
+    public void CreateSnapshot()
+    {
+        snapshot.Clear();
+        foreach (var person in population)
+        {
+            snapshot.Add(person.CreateMemento());
+        }
+        //foreach (var m in snapshot)
+        //{
+        //    CreateProperReference(m);
+        //}
+        snapshotNextID = nextID;
+    }
+
+    //public void CreateProperReference(Memento copy)
+    //{
+    //    foreach (var nb in copy.sensitiveState.GetNeighbours())
+    //    {
+    //        foreach (var m in snapshot)
+    //        {
+    //            if (m.ID == nb.person.GetID())
+    //            {
+    //                nb.person = m.ID
+    //            }
+    //        }
+    //    }
+    //}
 }

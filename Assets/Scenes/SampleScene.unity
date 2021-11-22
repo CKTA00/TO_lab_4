@@ -716,13 +716,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   board: {fileID: 1190870383}
   personPrefab: {fileID: 6724252165596034343, guid: f177c91d1bf109c428b8d3e39efeee09, type: 3}
-  initialPopulationSize: 20
-  sensitiveInitialChance: 0.513
-  spawnTime: 5
-  spawnTimeVariation: 2
+  initialPopulationSize: 200
+  sensitiveInitialChance: 1
+  spawnsPerMinute: 120
   sensitiveSpawnChance: 1
-  contaminatedSpawnChance: 0.69
-  contaminatedHasSymptomsChance: 1
+  contaminatedSpawnChance: 0.502
+  contaminatedHasSymptomsChance: 0.508
+  populationSizeLimit: 500
 --- !u!1 &1608183955
 GameObject:
   m_ObjectHideFlags: 0

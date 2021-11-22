@@ -14,4 +14,9 @@ public class ResistantPerson : GenericPersonState
     {
         //Debug.Log("Hellow update");
     }
+
+    public ResistantPerson Copy()
+    {
+        return new ResistantPerson();
+    }
 }
