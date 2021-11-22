@@ -125,24 +125,6 @@ public class SensitivePerson : GenericPersonState
         return neighbours;
     }
 
-    ///// <summary>
-    ///// Returns refrence to the same object but in the newPopulation
-    ///// </summary>
-    ///// <param name="oldReference"></param>
-    ///// <param name=""></param>
-    ///// <returns></returns>
-    //private Neighbour AttachNeighbour(PersonContext oldReference, Population newPopulation)
-    //{
-    //    foreach (var nb in neighbours)
-    //    {
-    //        if (nb.person == oldReference)
-    //        {
-
-    //        }
-    //    }
-    //    return null;
-    //}
-
     public SensitivePerson Copy()
     {
         SensitivePerson copy = new SensitivePerson();

@@ -47,14 +47,8 @@ public class PersonContext : MonoBehaviour
         return contaminationChance;
     }
 
-    //public void SetSymptomicChance(float chance)
-    //{
-    //    contaminationChance = chance;
-    //}
-
     public override int GetHashCode()
     {
-        //return velocity.GetHashCode() + currentPosition.GetHashCode() + ID;
         return ID;
     }
 
@@ -65,7 +59,6 @@ public class PersonContext : MonoBehaviour
 
     public void Setup(GameObject masterObject, GenericPersonState initialState, int ID, Vector3 velocity)
     {
-        //GameObject masterObject = GameObject.Find("Board");
         board = masterObject.GetComponent<Board>();
         population = masterObject.GetComponent<Population>();
 
@@ -168,21 +161,4 @@ public class PersonContext : MonoBehaviour
         currentPosition = memento.currentPosition;
         Setup(masterObject, state, memento.ID, memento.velocity);
     }
-
-
-
-    //public override bool Equals(object other)
-    //{
-    //    return this.Equals(other as PersonContext);
-    //}
-
-    //public bool Equals(PersonContext other)
-    //{
-    //    return (velocity == other.velocity && currentPosition == other.currentPosition && state.GetType() == other.state.GetType());
-    //}
-
-    //public override int GetHashCode()
-    //{
-    //    return base.GetHashCode();
-    //}
 }
