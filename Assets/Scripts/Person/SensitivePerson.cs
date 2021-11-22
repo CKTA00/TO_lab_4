@@ -36,6 +36,10 @@ public class SensitivePerson : GenericPersonState
     {
         ctx.GetComponent<MeshRenderer>().material = ctx.sensitiveMat;
         ctx.SetContaminationChance(0.0f);
+        //foreach (var nb in neighbours)
+        //{
+        //    Debug.Log("ID: "+nb.personID + "  time: "+nb.timeToContaminate);
+        //}
     }
 
     public override void UpdateState(PersonContext ctx, Population population)
@@ -72,7 +76,7 @@ public class SensitivePerson : GenericPersonState
         foreach (var nb in neighbours)
         {
             nb.timeToContaminate -= Time.fixedDeltaTime;
-            if(nb.timeToContaminate<0f)
+            if (nb.timeToContaminate<0f)
             {
                 PersonContext contaminator = population.FindPersonByID(nb.personID);
                 if(contaminator != null) //check if contaminator did not leave the board

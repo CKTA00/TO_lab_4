@@ -125,6 +125,7 @@ public class PersonContext : MonoBehaviour
         Memento memento = new Memento();
         // Coping structs:
         memento.velocity = velocity;
+        memento.ID = ID;
         memento.currentPosition = currentPosition;
         //memento.contaminationChance = contaminationChance;
 
