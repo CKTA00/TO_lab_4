@@ -41,4 +41,14 @@ public class Menu : MonoBehaviour
     {
         population.ReadSnapshot();
     }
+
+    public void LoadFile()
+    {
+        population.LoadFile();
+    }
+
+    public void SaveFile()
+    {
+        population.SaveFile();
+    }
 }

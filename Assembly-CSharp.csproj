@@ -56,14 +56,15 @@
     <Compile Include="Assets\Scripts\Person\GenericPersonState.cs" />
     <Compile Include="Assets\Scripts\Person\SensitivePerson.cs" />
     <Compile Include="Assets\Scripts\Population.cs" />
+    <Compile Include="Assets\Scripts\Menu.cs" />
     <Compile Include="Assets\Scripts\Person\ResistantPerson.cs" />
     <Compile Include="Assets\Scripts\Person\ContaminatedPerson.cs" />
+    <Compile Include="Assets\Scripts\Memento.cs" />
     <Compile Include="Assets\Scripts\Board.cs" />
     <Compile Include="Assets\Scripts\Person\ContaminatedPersonSymptomic.cs" />
     <Compile Include="Assets\Scripts\PersonContext.cs" />
     <Compile Include="Assets\Scripts\Person\ContaminatedPersonHiddenSymptoms.cs" />
-    <Compile Include="Assets\Scripts\Memento.cs" />
-    <Compile Include="Assets\Scripts\Menu.cs" />
+    <Compile Include="Assets\Scripts\MyVector3.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

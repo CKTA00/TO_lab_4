@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[System.Serializable]
 public class ContaminatedPersonSymptomic : ContaminatedPerson
 {
     public override void EnterState(PersonContext ctx)

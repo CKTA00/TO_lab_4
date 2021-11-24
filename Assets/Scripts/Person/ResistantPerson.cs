@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class ResistantPerson : GenericPersonState
 {
     public override void EnterState(PersonContext ctx)

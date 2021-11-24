@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public class Population : MonoBehaviour
@@ -150,6 +152,39 @@ public class Population : MonoBehaviour
                 Spawn(memento);
             }
         }
-       
     }
+
+
+    public void SaveFile()
+    {
+        //string destination = Application.persistentDataPath + "/" + System.DateTime.Now.ToString() + ".sim";
+        string destination = Application.persistentDataPath + "/save.sim";
+        FileStream file;
+
+        if (File.Exists(destination)) file = File.OpenWrite(destination);
+        else file = File.Create(destination);
+
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(file, snapshot);
+        file.Close();
+    }
+
+    public void LoadFile()
+    {
+        string destination = Application.persistentDataPath + "/save.sim";
+        FileStream file;
+
+        if (File.Exists(destination)) file = File.OpenRead(destination);
+        else
+        {
+            Debug.LogError("File not found");
+            return;
+        }
+
+        BinaryFormatter bf = new BinaryFormatter();
+        snapshot = (List<Memento>)bf.Deserialize(file);
+        file.Close();
+
+    }
+
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Neighbour
 {
     public float timeToContaminate;
@@ -26,7 +27,7 @@ public class Neighbour
     }
 }
 
-
+[System.Serializable]
 public class SensitivePerson : GenericPersonState
 {
     List<Neighbour> neighbours = new List<Neighbour>();
