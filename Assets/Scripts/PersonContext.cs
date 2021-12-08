@@ -11,10 +11,10 @@ public class PersonContext : MonoBehaviour
 
     [Header("Properties")]
 
-    public int ID;
+    int ID;
     Vector3 velocity; // in m per 0.04 s
     Vector3 currentPosition;
-    private float contaminationChance;
+    float contaminationChance;
     [SerializeField] [Range(0, 1)] private float symptomicChance = 0.5f;
     [SerializeField] private float directionChangeTime;
     [SerializeField] private float directionChangeTimeVariation;

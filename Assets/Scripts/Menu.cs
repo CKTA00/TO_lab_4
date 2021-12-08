@@ -47,16 +47,23 @@ public class Menu : MonoBehaviour
     public void LoadFile()
     {
         string name = fileName.text;
-        if(name == null || name == "")
-            name = Application.persistentDataPath + "/" + System.DateTime.Now.ToString() + ".sim";
+        if(String.IsNullOrWhiteSpace(name))
+        {
+            name = "default";
+        }
+        name = Application.persistentDataPath + "/" + name + ".sim";
+
         population.LoadFile(name);
     }
 
     public void SaveFile()
     {
         string name = fileName.text;
-        //if (name == null || name == "")
-           
+        if (String.IsNullOrWhiteSpace(name))
+        {
+            name = "default";
+        }
+        name = Application.persistentDataPath + "/" + name + ".sim";
         population.SaveFile(name);
     }
 }

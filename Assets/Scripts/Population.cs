@@ -170,7 +170,7 @@ public class Population : MonoBehaviour
         if (File.Exists(destination)) file = File.OpenRead(destination);
         else
         {
-            Debug.LogError("File not found");
+            Debug.LogWarning("File not found");
             return;
         }
 
