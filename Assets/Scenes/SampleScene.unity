@@ -1887,8 +1887,8 @@ MonoBehaviour:
   sensitiveInitialChance: 1
   spawnsPerMinute: 120
   sensitiveSpawnChance: 1
-  contaminatedSpawnChance: 0.502
-  contaminatedHasSymptomsChance: 1
+  contaminatedSpawnChance: 0.1
+  contaminatedHasSymptomsChance: 0.5
   populationSizeLimit: 500
 --- !u!1 &1482989578
 GameObject:
