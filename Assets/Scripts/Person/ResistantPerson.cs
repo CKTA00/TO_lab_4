@@ -14,7 +14,7 @@ public class ResistantPerson : GenericPersonState
 
     public override void UpdateState(PersonContext ctx, Population population)
     {
-        //Debug.Log("Hellow update");
+
     }
 
     public ResistantPerson Copy()

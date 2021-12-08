@@ -6,7 +6,6 @@ using UnityEngine;
 public class Neighbour
 {
     public float timeToContaminate;
-    //public PersonContext person;
     public int personID;
 
     public Neighbour(PersonContext person, float time)
@@ -37,10 +36,6 @@ public class SensitivePerson : GenericPersonState
     {
         ctx.GetComponent<MeshRenderer>().material = ctx.sensitiveMat;
         ctx.SetContaminationChance(0.0f);
-        //foreach (var nb in neighbours)
-        //{
-        //    Debug.Log("ID: "+nb.personID + "  time: "+nb.timeToContaminate);
-        //}
     }
 
     public override void UpdateState(PersonContext ctx, Population population)
@@ -88,8 +83,6 @@ public class SensitivePerson : GenericPersonState
                             ctx.SwitchState(ctx.symptomicState);
                         else
                             ctx.SwitchState(ctx.hiddenSymptomsState);
-
-                        //Debug.Log("CONTAMINATION");
                     }
                     else
                     {

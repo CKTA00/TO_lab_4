@@ -138,7 +138,6 @@ public class PersonContext : MonoBehaviour
         memento.velocity = velocity;
         memento.ID = ID;
         memento.currentPosition = currentPosition;
-        //memento.contaminationChance = contaminationChance;
 
         // Deep-coping referenced objects:
         memento.resistantState = resistantState.Copy();

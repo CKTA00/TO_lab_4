@@ -72,7 +72,7 @@ public class Population : MonoBehaviour
             else
                 currentPerson.Setup(gameObject, currentPerson.resistantState, nextID, velocity);
             population.Add(currentPerson);
-            nextID++; //ukryj to za kolejnym obiektem
+            nextID++;
         }
     }
 
