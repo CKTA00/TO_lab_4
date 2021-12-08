@@ -155,10 +155,8 @@ public class Population : MonoBehaviour
     }
 
 
-    public void SaveFile()
+    public void SaveFile(string destination)
     {
-        //string destination = Application.persistentDataPath + "/" + System.DateTime.Now.ToString() + ".sim";
-        string destination = Application.persistentDataPath + "/save.sim";
         FileStream file;
 
         if (File.Exists(destination)) file = File.OpenWrite(destination);
@@ -169,9 +167,8 @@ public class Population : MonoBehaviour
         file.Close();
     }
 
-    public void LoadFile()
+    public void LoadFile(string destination)
     {
-        string destination = Application.persistentDataPath + "/save.sim";
         FileStream file;
 
         if (File.Exists(destination)) file = File.OpenRead(destination);

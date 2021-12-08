@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class Menu : MonoBehaviour
     bool isPaused = false;
     public Button createButton;
     public Button readButton;
+    public InputField fileName;
     public Population population;
 
     void Start()
@@ -44,11 +46,17 @@ public class Menu : MonoBehaviour
 
     public void LoadFile()
     {
-        population.LoadFile();
+        string name = fileName.text;
+        if(name == null || name == "")
+            name = Application.persistentDataPath + "/" + System.DateTime.Now.ToString() + ".sim";
+        population.LoadFile(name);
     }
 
     public void SaveFile()
     {
-        population.SaveFile();
+        string name = fileName.text;
+        //if (name == null || name == "")
+           
+        population.SaveFile(name);
     }
 }
