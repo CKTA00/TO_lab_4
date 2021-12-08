@@ -8,7 +8,7 @@ public class ContaminatedPersonHiddenSymptoms : ContaminatedPerson
     public override void EnterState(PersonContext ctx)
     {
         base.EnterState(ctx);
-        ctx.SetContaminationChance(1.0f);
+        ctx.SetContaminationChance(0.5f);
         ctx.particles.enableEmission = false;
     }
 

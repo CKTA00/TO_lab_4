@@ -15,7 +15,7 @@ public class PersonContext : MonoBehaviour
     Vector3 velocity; // in m per 0.04 s
     Vector3 currentPosition;
     private float contaminationChance;
-    [SerializeField]private float symptomicChance = 0.5f; // currently do not need saving in memento
+    [SerializeField] [Range(0, 1)] private float symptomicChance = 0.5f;
     [SerializeField] private float directionChangeTime;
     [SerializeField] private float directionChangeTimeVariation;
     private float directionChangeTimer;
@@ -48,7 +48,7 @@ public class PersonContext : MonoBehaviour
 
     public float GetSymptomicChance()
     {
-        return contaminationChance;
+        return symptomicChance;
     }
 
     public override int GetHashCode()
