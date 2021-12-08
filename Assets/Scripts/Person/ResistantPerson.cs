@@ -9,6 +9,7 @@ public class ResistantPerson : GenericPersonState
     {
         ctx.GetComponent<MeshRenderer>().material = ctx.resistantMat;
         ctx.SetContaminationChance(0.0f);
+        ctx.particles.enableEmission = false;
     }
 
     public override void UpdateState(PersonContext ctx, Population population)

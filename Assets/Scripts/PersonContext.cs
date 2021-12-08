@@ -26,6 +26,7 @@ public class PersonContext : MonoBehaviour
     public Material sensitiveMat;
     public Material resistantMat;
     public Material contaminatedMat;
+    public ParticleSystem particles;
 
     public Vector3 GetCurrentPosition()
     {
@@ -70,6 +71,9 @@ public class PersonContext : MonoBehaviour
         state = initialState;
         state.EnterState(this);
         this.ID = ID;
+
+        particles = gameObject.GetComponent<ParticleSystem>();
+        particles.enableEmission = false;
     }
 
     private void FixedUpdate()
