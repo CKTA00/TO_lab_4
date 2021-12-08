@@ -15,7 +15,10 @@ public class PersonContext : MonoBehaviour
     Vector3 velocity; // in m per 0.04 s
     Vector3 currentPosition;
     private float contaminationChance;
-    private float symptomicChance = 0.5f; // currently do not need saving in memento
+    [SerializeField]private float symptomicChance = 0.5f; // currently do not need saving in memento
+    [SerializeField] private float directionChangeTime;
+    [SerializeField] private float directionChangeTimeVariation;
+    private float directionChangeTimer;
 
     // references
     private Board board;
@@ -62,7 +65,8 @@ public class PersonContext : MonoBehaviour
     {
         board = masterObject.GetComponent<Board>();
         population = masterObject.GetComponent<Population>();
-
+        particles = gameObject.GetComponent<ParticleSystem>();
+        particles.enableEmission = false;
         currentPosition = gameObject.GetComponent<Transform>().position;
 
         this.velocity = velocity;
@@ -72,12 +76,12 @@ public class PersonContext : MonoBehaviour
         state.EnterState(this);
         this.ID = ID;
 
-        particles = gameObject.GetComponent<ParticleSystem>();
-        particles.enableEmission = false;
+        directionChangeTimer = 0;
     }
 
     private void FixedUpdate()
     {
+        HandleRandomDirection();
         HandleMovement();
         state.UpdateState(this,population);
     }
@@ -109,6 +113,16 @@ public class PersonContext : MonoBehaviour
             }
         }
         gameObject.transform.position = currentPosition;
+    }
+
+    private void HandleRandomDirection()
+    {
+        directionChangeTimer -= Time.fixedDeltaTime;
+        if(directionChangeTimer<=0)
+        {
+            directionChangeTimer = directionChangeTime + directionChangeTimeVariation * Random.Range(-1f, 1f);
+            velocity = population.GetRandomVelocity();
+        }
     }
 
     public void SwitchState(GenericPersonState newState)

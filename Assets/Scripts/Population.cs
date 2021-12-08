@@ -64,9 +64,7 @@ public class Population : MonoBehaviour
         for (int i = 0; i < initialPopulationSize; i++)
         {
             Vector3 position = board.getRandomFieldPosition();
-            Vector3 velocity = Random.insideUnitCircle * maxVelocity;
-            velocity.z = velocity.y;
-            velocity.y = 0;
+            Vector3 velocity = GetRandomVelocity();
             
             PersonContext currentPerson = GameObject.Instantiate(personPrefab, position, Quaternion.Euler(0, 0, 0)).GetComponent<PersonContext>();
             if (Random.Range(0f, 1f) < sensitiveInitialChance)
@@ -81,9 +79,7 @@ public class Population : MonoBehaviour
     private void RandomSpawn()
     {
         Vector3 position = board.GetRandomBoundryPosition();
-        Vector3 velocity = Random.insideUnitCircle * maxVelocity;
-        velocity.z = velocity.y;
-        velocity.y = 0;
+        Vector3 velocity = GetRandomVelocity();
         PersonContext currentPerson = GameObject.Instantiate(personPrefab, position, Quaternion.Euler(0, 0, 0)).GetComponent<PersonContext>();
         if (Random.Range(0f, 1f) < contaminatedSpawnChance)
         {
@@ -182,6 +178,15 @@ public class Population : MonoBehaviour
         snapshot = (List<Memento>)bf.Deserialize(file);
         file.Close();
 
+    }
+
+
+    public Vector3 GetRandomVelocity()
+    {
+        Vector3 velocity = Random.insideUnitCircle * maxVelocity;
+        velocity.z = velocity.y;
+        velocity.y = 0;
+        return velocity;
     }
 
 }

@@ -97,9 +97,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
+  symptomicChance: 0.5
+  directionChangeTime: 5
+  directionChangeTimeVariation: 5
   sensitiveMat: {fileID: 2100000, guid: 2664a8b7d0a718f49871bf408f8116fc, type: 2}
   resistantMat: {fileID: 2100000, guid: 8578c64889d394940b96889547ca42e3, type: 2}
   contaminatedMat: {fileID: 2100000, guid: f0aad4ace11f987418d5080396476c40, type: 2}
+  particles: {fileID: 0}
 --- !u!198 &916077020836546844
 ParticleSystem:
   m_ObjectHideFlags: 0
