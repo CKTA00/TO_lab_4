@@ -9,7 +9,7 @@ public class ContaminatedPersonHiddenSymptoms : ContaminatedPerson
     {
         base.EnterState(ctx);
         ctx.SetContaminationChance(1.0f);
-        ctx.particles.enableEmission = true;
+        ctx.particles.enableEmission = false;
     }
 
     public new ContaminatedPersonHiddenSymptoms Copy()

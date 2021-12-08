@@ -7,6 +7,7 @@ public class ContaminatedPersonSymptomic : ContaminatedPerson
     {
         base.EnterState(ctx);
         ctx.SetContaminationChance(1.0f);
+        ctx.particles.enableEmission = true;
     }
 
     public new ContaminatedPersonSymptomic Copy()
