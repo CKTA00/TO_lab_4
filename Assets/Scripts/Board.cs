@@ -90,19 +90,4 @@ public class Board : MonoBehaviour
     {
         return new Vector3(Random.Range(-size.x / 2, size.x/2), 0.0f, Random.Range(-size.y / 2, size.y/2));
     }
-
-    void Update()
-    {
-
-        /*
-        timer += Time.deltaTime;
-        if(timer>1)
-        {
-            pos = GetRandomBoundryPosition();
-            timer = 0;
-            Debug.Log("T");
-        }
-        Debug.DrawLine(Vector3.zero, pos);
-        */
-    }
 }
